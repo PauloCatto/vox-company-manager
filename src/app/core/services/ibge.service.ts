@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { State, City } from '../../shared/interfaces/ibge.interfaces';
+import {
+  State,
+  City,
+  ViaCepResponse,
+} from '../../shared/interfaces/ibge.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -19,5 +23,12 @@ export class IbgeService {
 
   getCitiesByState(uf: string): Observable<City[]> {
     return this.http.get<City[]>(`${environment.states}${uf}/municipios`);
+  }
+
+  getAddressByCep(cep: string): Observable<ViaCepResponse> {
+    const cleanCep = cep.replace(/\D/g, '');
+    return this.http.get<ViaCepResponse>(
+      `https://viacep.com.br/ws/${cleanCep}/json/`
+    );
   }
 }

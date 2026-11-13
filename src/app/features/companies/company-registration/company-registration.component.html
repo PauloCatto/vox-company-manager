@@ -4,354 +4,395 @@
   </div>
 </div>
 <div class="container mt-4">
-  <form
-    [formGroup]="cadastroForm"
-    [class.disabled]="loadingForm"
-    (ngSubmit)="onSubmit()"
-  >
-    <div class="row justify-content-center">
-      <div class="col-lg-5 col-12 mb-3 mb-lg-0">
-        <h5 class="text-secondary">Dados do solicitante</h5>
+  <div class="card border-0 shadow-sm rounded-4 p-4">
+    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+      <div>
+        <h4 class="fw-bold text-dark mb-1">
+          <i class="bi bi-building-add text-primary me-2"></i>
+          {{ isEditMode ? "Editar Solicitação de Abertura" : "Nova Solicitação de Abertura" }}
+        </h4>
+        <small class="text-secondary">
+          Preencha os dados societários e endereço comercial integrado ao IBGE e ViaCEP.
+        </small>
+      </div>
+      <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
+        {{ isEditMode ? "Modo Edição" : "Novo Registro" }}
+      </span>
+    </div>
 
-        <div class="mb-3">
-          <label class="form-label"><b>Responsável pela empresa*</b></label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="responsavel"
-            [ngClass]="{
-              'is-invalid':
-                controls['responsavel'].invalid &&
-                (controls['responsavel'].touched ||
-                  controls['responsavel'].dirty)
-            }"
-          />
-          <div
-            *ngIf="
-              controls['responsavel'].invalid && controls['responsavel'].touched
-            "
-            class="invalid-feedback d-block"
-          >
-            <div *ngIf="controls['responsavel'].errors?.['required']">
-              O nome do Responsável é obrigatório.
-            </div>
-          </div>
-        </div>
+    <form
+      [formGroup]="cadastroForm"
+      [class.disabled]="loadingForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-12 mb-3 mb-lg-0">
+          <h5 class="text-primary fw-semibold mb-3">
+            <i class="bi bi-person-badge me-1"></i> Dados do solicitante
+          </h5>
 
-        <div class="mb-3">
-          <label class="form-label"><b>CPF*</b></label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="cpf"
-            placeholder="999.999.999-99"
-            (input)="onlyNumbers($event, 'cpf', 11)"
-            maxlength="11"
-            [ngClass]="{
-              'is-invalid':
-                controls['cpf'].invalid &&
-                (controls['cpf'].touched || controls['cpf'].dirty)
-            }"
-          />
-          <div
-            *ngIf="controls['cpf'].invalid && controls['cpf'].touched"
-            class="invalid-feedback d-block"
-          >
-            <div *ngIf="controls['cpf'].errors?.['required']">
-              O CPF é obrigatório.
-            </div>
-            <div
-              *ngIf="controls['cpf'].errors?.['pattern'] || (controls['cpf'].value?.length > 0 && controls['cpf'].value?.length < 11)"
-            >
-              O CPF deve ter 11 dígitos.
-            </div>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label"><b>Data nascimento*</b></label>
-          <input
-            type="date"
-            class="form-control"
-            formControlName="dataNascimento"
-            [max]="today"
-            [ngClass]="{
-              'is-invalid':
-                controls['dataNascimento'].invalid &&
-                controls['dataNascimento'].touched
-            }"
-          />
-          <div
-            *ngIf="
-              controls['dataNascimento'].invalid &&
-              controls['dataNascimento'].touched
-            "
-            class="invalid-feedback d-block"
-          >
-            <div *ngIf="controls['dataNascimento'].errors?.['required']">
-              A Data de Nascimento é obrigatória.
-            </div>
-          </div>
-        </div>
-
-        <h5>Dados da empresa</h5>
-
-        <div class="mb-3">
-          <label class="form-label"><b>Nome fantasia*</b></label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="nomeFantasia"
-            [ngClass]="{
-              'is-invalid':
-                controls['nomeFantasia'].invalid &&
-                (controls['nomeFantasia'].touched ||
-                  controls['nomeFantasia'].dirty)
-            }"
-          />
-          <div
-            *ngIf="
-              controls['nomeFantasia'].invalid &&
-              controls['nomeFantasia'].touched
-            "
-            class="invalid-feedback d-block"
-          >
-            <div *ngIf="controls['nomeFantasia'].errors?.['required']">
-              O Nome Fantasia é obrigatório.
-            </div>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label"
-            ><b>Escolha sua entidade de registro*</b></label
-          >
-          <div class="form-check" *ngFor="let entidade of entitiesRegistry">
+          <div class="mb-3">
+            <label class="form-label"><b>Responsável pela empresa*</b></label>
             <input
-              class="form-check-input"
-              type="radio"
-              [value]="entidade"
-              formControlName="entidadeRegistro"
+              type="text"
+              class="form-control"
+              formControlName="responsavel"
+              placeholder="Nome completo do sócio responsável"
               [ngClass]="{
                 'is-invalid':
-                  controls['entidadeRegistro'].invalid &&
-                  controls['entidadeRegistro'].touched
+                  controls['responsavel'].invalid &&
+                  (controls['responsavel'].touched ||
+                    controls['responsavel'].dirty)
               }"
             />
-            <label class="form-check-label">{{ entidade }}</label>
-          </div>
-          <div
-            *ngIf="
-              controls['entidadeRegistro'].invalid &&
-              controls['entidadeRegistro'].touched
-            "
-            class="invalid-feedback d-block mt-1"
-          >
-            <div *ngIf="controls['entidadeRegistro'].errors?.['required']">
-              Selecione uma Entidade de Registro.
+            <div
+              *ngIf="
+                controls['responsavel'].invalid &&
+                controls['responsavel'].touched
+              "
+              class="invalid-feedback d-block"
+            >
+              <div *ngIf="controls['responsavel'].errors?.['required']">
+                O nome do Responsável é obrigatório.
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div
-        class="col-auto"
-        [ngClass]="{
-          'divider-margin': true,
-          'd-none d-lg-flex': true
-        }"
-      >
-        <div class="divider-vertical"></div>
-      </div>
+          <div class="mb-3">
+            <label class="form-label"><b>CPF*</b> <small class="text-secondary fw-normal">(somente números)</small></label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="cpf"
+              placeholder="99999999999"
+              (input)="onlyNumbers($event, 'cpf', 11)"
+              maxlength="11"
+              [ngClass]="{
+                'is-invalid':
+                  controls['cpf'].invalid &&
+                  (controls['cpf'].touched || controls['cpf'].dirty)
+              }"
+            />
+            <div
+              *ngIf="controls['cpf'].invalid && controls['cpf'].touched"
+              class="invalid-feedback d-block"
+            >
+              <div *ngIf="controls['cpf'].errors?.['required']">
+                O CPF é obrigatório.
+              </div>
+              <div
+                *ngIf="controls['cpf'].errors?.['pattern'] || (controls['cpf'].value?.length > 0 && controls['cpf'].value?.length < 11)"
+              >
+                O CPF deve ter 11 dígitos.
+              </div>
+            </div>
+          </div>
 
-      <div class="col-lg-5 col-12">
-        <h5 class="text-secondary">Endereço da empresa</h5>
+          <div class="mb-3">
+            <label class="form-label"><b>Data nascimento*</b></label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="dataNascimento"
+              [max]="today"
+              [ngClass]="{
+                'is-invalid':
+                  controls['dataNascimento'].invalid &&
+                  controls['dataNascimento'].touched
+              }"
+            />
+            <div
+              *ngIf="
+                controls['dataNascimento'].invalid &&
+                controls['dataNascimento'].touched
+              "
+              class="invalid-feedback d-block"
+            >
+              <div *ngIf="controls['dataNascimento'].errors?.['required']">
+                A Data de Nascimento é obrigatória.
+              </div>
+            </div>
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label"><b>CEP*</b></label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="cep"
-            placeholder="99999-999"
-            (input)="onlyNumbers($event, 'cep', 8)"
-            maxlength="8"
-            [ngClass]="{
-              'is-invalid':
-                controls['cep'].invalid &&
-                (controls['cep'].touched || controls['cep'].dirty)
-            }"
-          />
-          <div
-            *ngIf="controls['cep'].invalid && controls['cep'].touched"
-            class="invalid-feedback d-block"
-          >
-            <div *ngIf="controls['cep'].errors?.['required']">
-              O CEP é obrigatório.
+          <h5 class="text-primary fw-semibold mt-4 mb-3">
+            <i class="bi bi-briefcase me-1"></i> Dados da empresa
+          </h5>
+
+          <div class="mb-3">
+            <label class="form-label"><b>Nome fantasia*</b></label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="nomeFantasia"
+              placeholder="Ex: Vox Tecnologia & Inovação Ltda"
+              [ngClass]="{
+                'is-invalid':
+                  controls['nomeFantasia'].invalid &&
+                  (controls['nomeFantasia'].touched ||
+                    controls['nomeFantasia'].dirty)
+              }"
+            />
+            <div
+              *ngIf="
+                controls['nomeFantasia'].invalid &&
+                controls['nomeFantasia'].touched
+              "
+              class="invalid-feedback d-block"
+            >
+              <div *ngIf="controls['nomeFantasia'].errors?.['required']">
+                O Nome Fantasia é obrigatório.
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"
+              ><b>Escolha sua entidade de registro*</b></label
+            >
+            <div
+              class="form-check"
+              *ngFor="let item of entitiesRegistryItems"
+            >
+              <input
+                class="form-check-input"
+                type="radio"
+                [value]="item.key"
+                formControlName="entidadeRegistro"
+                [id]="'ent-' + item.key"
+                [ngClass]="{
+                  'is-invalid':
+                    controls['entidadeRegistro'].invalid &&
+                    controls['entidadeRegistro'].touched
+                }"
+              />
+              <label class="form-check-label" [for]="'ent-' + item.key">{{
+                item.value
+              }}</label>
             </div>
             <div
-              *ngIf="controls['cep'].errors?.['pattern'] || (controls['cep'].value?.length > 0 && controls['cep'].value?.length < 8)"
+              *ngIf="
+                controls['entidadeRegistro'].invalid &&
+                controls['entidadeRegistro'].touched
+              "
+              class="invalid-feedback d-block mt-1"
             >
-              O CEP deve ter 8 dígitos.
+              <div *ngIf="controls['entidadeRegistro'].errors?.['required']">
+                Selecione uma Entidade de Registro.
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label"><b>Endereço*</b></label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="endereco"
-            [ngClass]="{
-              'is-invalid':
-                controls['endereco'].invalid &&
-                (controls['endereco'].touched || controls['endereco'].dirty)
-            }"
-          />
-          <div
-            *ngIf="controls['endereco'].invalid && controls['endereco'].touched"
-            class="invalid-feedback d-block"
-          >
-            <div *ngIf="controls['endereco'].errors?.['required']">
-              O Endereço é obrigatório.
+        <div
+          class="col-auto"
+          [ngClass]="{
+            'divider-margin': true,
+            'd-none d-lg-flex': true
+          }"
+        >
+          <div class="divider-vertical"></div>
+        </div>
+
+        <div class="col-lg-5 col-12">
+          <h5 class="text-primary fw-semibold mb-3">
+            <i class="bi bi-geo-alt me-1"></i> Endereço da empresa
+          </h5>
+
+          <div class="mb-3">
+            <label class="form-label d-flex justify-content-between">
+              <span><b>CEP*</b> <small class="text-secondary fw-normal">(preenchimento automático ViaCEP)</small></span>
+              <span *ngIf="loadingCep" class="text-primary small">
+                <span class="spinner-border spinner-border-sm me-1"></span>Buscando...
+              </span>
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="cep"
+              placeholder="99999999"
+              (input)="onCepInput($event)"
+              maxlength="8"
+              [ngClass]="{
+                'is-invalid':
+                  controls['cep'].invalid &&
+                  (controls['cep'].touched || controls['cep'].dirty)
+              }"
+            />
+            <div
+              *ngIf="controls['cep'].invalid && controls['cep'].touched"
+              class="invalid-feedback d-block"
+            >
+              <div *ngIf="controls['cep'].errors?.['required']">
+                O CEP é obrigatório.
+              </div>
+              <div
+                *ngIf="controls['cep'].errors?.['pattern'] || (controls['cep'].value?.length > 0 && controls['cep'].value?.length < 8)"
+              >
+                O CEP deve ter 8 dígitos.
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="mb-3">
-          <label class="form-label"><b>Número*</b></label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="numero"
-            [ngClass]="{
-              'is-invalid':
-                controls['numero'].invalid &&
-                (controls['numero'].touched || controls['numero'].dirty)
-            }"
-          />
-          <div
-            *ngIf="controls['numero'].invalid && controls['numero'].touched"
-            class="invalid-feedback d-block"
-          >
-            <div *ngIf="controls['numero'].errors?.['required']">
-              O Número é obrigatório.
+          <div class="mb-3">
+            <label class="form-label"><b>Endereço (Logradouro)*</b></label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="endereco"
+              [ngClass]="{
+                'is-invalid':
+                  controls['endereco'].invalid &&
+                  (controls['endereco'].touched || controls['endereco'].dirty)
+              }"
+            />
+            <div
+              *ngIf="controls['endereco'].invalid && controls['endereco'].touched"
+              class="invalid-feedback d-block"
+            >
+              <div *ngIf="controls['endereco'].errors?.['required']">
+                O Endereço é obrigatório.
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="mb-3">
-          <label class="form-label"><b>Bairro*</b></label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="bairro"
-            [ngClass]="{
-              'is-invalid':
-                controls['bairro'].invalid &&
-                (controls['bairro'].touched || controls['bairro'].dirty)
-            }"
-          />
-          <div
-            *ngIf="controls['bairro'].invalid && controls['bairro'].touched"
-            class="invalid-feedback d-block"
-          >
-            <div *ngIf="controls['bairro'].errors?.['required']">
-              O Bairro é obrigatório.
+          <div class="row g-2">
+            <div class="col-5 mb-3">
+              <label class="form-label"><b>Número*</b></label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="numero"
+                [ngClass]="{
+                  'is-invalid':
+                    controls['numero'].invalid &&
+                    (controls['numero'].touched || controls['numero'].dirty)
+                }"
+              />
+              <div
+                *ngIf="controls['numero'].invalid && controls['numero'].touched"
+                class="invalid-feedback d-block"
+              >
+                <div *ngIf="controls['numero'].errors?.['required']">
+                  Obrigatório.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-7 mb-3">
+              <label class="form-label"><b>Complemento</b></label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="complemento"
+                placeholder="Sala, Andar, Bloco..."
+              />
             </div>
           </div>
-        </div>
 
-        <div class="mb-3">
-          <label class="form-label"><b>Complemento</b></label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="complemento"
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label"><b>Estado*</b></label>
-          <select
-            class="form-select"
-            formControlName="estado"
-            [ngClass]="{
-              'is-invalid':
-                controls['estado'].invalid && controls['estado'].touched
-            }"
-          >
-            <option value="">Selecione</option>
-            <option *ngFor="let estado of states" [value]="estado.sigla">
-              {{ estado.sigla }}
-            </option>
-          </select>
-          <div
-            *ngIf="controls['estado'].invalid && controls['estado'].touched"
-            class="invalid-feedback d-block"
-          >
-            <div *ngIf="controls['estado'].errors?.['required']">
-              O Estado é obrigatório.
+          <div class="mb-3">
+            <label class="form-label"><b>Bairro*</b></label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="bairro"
+              [ngClass]="{
+                'is-invalid':
+                  controls['bairro'].invalid &&
+                  (controls['bairro'].touched || controls['bairro'].dirty)
+              }"
+            />
+            <div
+              *ngIf="controls['bairro'].invalid && controls['bairro'].touched"
+              class="invalid-feedback d-block"
+            >
+              <div *ngIf="controls['bairro'].errors?.['required']">
+                O Bairro é obrigatório.
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="mb-3">
-          <label class="form-label"><b>Cidade*</b></label>
-          <select
-            class="form-select"
-            formControlName="cidade"
-            [disabled]="controls['cidade'].disabled || loadingCities"
-            [ngClass]="{
-              'is-invalid':
-                controls['cidade'].invalid && controls['cidade'].touched
-            }"
-          >
-            <option value="" *ngIf="!loadingCities">
-              Selecione uma cidade
-            </option>
-            <option value="" disabled *ngIf="loadingCities">
-              Carregando...
-            </option>
-
-            <option *ngFor="let cidade of cities" [value]="cidade.nome">
-              {{ cidade.nome }}
-            </option>
-          </select>
-          <div
-            *ngIf="controls['cidade'].invalid && controls['cidade'].touched"
-            class="invalid-feedback d-block"
-          >
-            <div *ngIf="controls['cidade'].errors?.['required']">
-              A Cidade é obrigatória.
+          <div class="mb-3">
+            <label class="form-label"><b>Estado (UF)*</b></label>
+            <select
+              class="form-select"
+              formControlName="estado"
+              [ngClass]="{
+                'is-invalid':
+                  controls['estado'].invalid && controls['estado'].touched
+              }"
+            >
+              <option value="">Selecione</option>
+              <option *ngFor="let estado of states" [value]="estado.sigla">
+                {{ estado.sigla }} - {{ estado.nome }}
+              </option>
+            </select>
+            <div
+              *ngIf="controls['estado'].invalid && controls['estado'].touched"
+              class="invalid-feedback d-block"
+            >
+              <div *ngIf="controls['estado'].errors?.['required']">
+                O Estado é obrigatório.
+              </div>
             </div>
+          </div>
 
-            <div *ngIf="controls['cidade'].errors?.['cidadeObrigatoria']">
-              O estado foi alterado! Por favor selecione a cidade novamente.
+          <div class="mb-3">
+            <label class="form-label"><b>Cidade (IBGE)*</b></label>
+            <select
+              class="form-select"
+              formControlName="cidade"
+              [disabled]="controls['cidade'].disabled || loadingCities"
+              [ngClass]="{
+                'is-invalid':
+                  controls['cidade'].invalid && controls['cidade'].touched
+              }"
+            >
+              <option value="" *ngIf="!loadingCities">
+                Selecione uma cidade
+              </option>
+              <option value="" disabled *ngIf="loadingCities">
+                Carregando...
+              </option>
+
+              <option *ngFor="let cidade of cities" [value]="cidade.nome">
+                {{ cidade.nome }}
+              </option>
+            </select>
+            <div
+              *ngIf="controls['cidade'].invalid && controls['cidade'].touched"
+              class="invalid-feedback d-block"
+            >
+              <div *ngIf="controls['cidade'].errors?.['required']">
+                A Cidade é obrigatória.
+              </div>
+
+              <div *ngIf="controls['cidade'].errors?.['cidadeObrigatoria']">
+                O estado foi alterado! Por favor selecione a cidade novamente.
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="mt-4 d-grid gap-2 d-sm-flex justify-content-sm-end p-3">
-      <button type="button" class="btn btn-secondary" (click)="goBack()">
-        Voltar
-      </button>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="
-          (isEditMode &&
-            (cadastroForm.invalid ||
-              cadastroForm.pristine ||
-              !controls['cidade'].value)) ||
-          (!isEditMode && cadastroForm.invalid)
-        "
-      >
-        <i class="bi bi-send"></i> Enviar
-      </button>
-    </div>
-  </form>
+      <div class="mt-4 d-grid gap-2 d-sm-flex justify-content-sm-end pt-3 border-top">
+        <button type="button" class="btn btn-outline-secondary px-4" (click)="goBack()">
+          Voltar
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary px-4"
+          [disabled]="
+            (isEditMode &&
+              (cadastroForm.invalid ||
+                cadastroForm.pristine ||
+                !controls['cidade'].value)) ||
+            (!isEditMode && cadastroForm.invalid)
+          "
+        >
+          <i class="bi bi-send me-1"></i>
+          {{ isEditMode ? "Salvar Alterações" : "Enviar Solicitação" }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

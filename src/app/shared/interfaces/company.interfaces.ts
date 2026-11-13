@@ -20,11 +20,15 @@ export interface Solicitante {
   date_nascimento: string;
 }
 
+export type CompanyStatus = 'Aprovado' | 'Em Análise' | 'Pendente';
+
 export interface Company {
   id?: string;
   solicitante: Solicitante;
   empresa: Empresa;
-  companyName: string;
+  companyName?: string;
+  status?: CompanyStatus;
+  created_at?: string;
 }
 
 export interface EntityRegistry {

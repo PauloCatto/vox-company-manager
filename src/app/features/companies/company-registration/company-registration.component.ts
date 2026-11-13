@@ -13,7 +13,10 @@ import { CompanyService } from '../../../core/services/company.service';
 import { IbgeService } from '../../../core/services/ibge.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { State, City } from '../../../shared/interfaces/ibge.interfaces';
-import { Company } from '../../../shared/interfaces/company.interfaces';
+import {
+  Company,
+  EntityRegistry,
+} from '../../../shared/interfaces/company.interfaces';
 
 @Component({
   selector: 'app-company-registration',
@@ -26,9 +29,11 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
   cadastroForm!: FormGroup;
   isEditMode: boolean = false;
   loadingCities: boolean = false;
+  loadingCep: boolean = false;
   loadingForm: boolean = false;
   currentId: string | null = null;
   entitiesRegistry: string[] = [];
+  entitiesRegistryItems: EntityRegistry[] = [];
   today: string = this.getToday();
   states: State[] = [];
   cities: City[] = [];
@@ -40,7 +45,7 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
   private companyService = inject(CompanyService);
   private ibgeService = inject(IbgeService);
   private toastService = inject(ToastService);
-  
+
   ngOnInit(): void {
     this.initializeForm();
     this.getEntitiesRegistry();
@@ -98,10 +103,12 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
+          this.entitiesRegistryItems = data ?? [];
           this.entitiesRegistry = data?.map((e: any) => e.value) ?? [];
         },
         error: (err) => {
           this.entitiesRegistry = [];
+          this.entitiesRegistryItems = [];
           console.error('Erro ao carregar entidades de registro:', err);
           this.toastService.error(
             'Erro ao carregar entidades de registro. Por favor, tente novamente.'
@@ -155,6 +162,9 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
 
   public loadCities(uf: string, selectedCity?: string) {
     this.loadingCities = true;
+    const cityControl = this.cadastroForm.get('cidade');
+    cityControl?.enable({ emitEvent: false });
+
     this.ibgeService
       .getCitiesByState(uf)
       .pipe(
@@ -171,7 +181,10 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
             const match = this.cities.find(
               (c) => c.nome.toLowerCase() === selectedCity.toLowerCase()
             );
-            this.cadastroForm.get('cidade')?.setValue(match?.nome ?? '');
+            cityControl?.setValue(match?.nome ?? selectedCity, {
+              emitEvent: false,
+            });
+            cityControl?.setErrors(null);
           }
         },
         error: (err) => {
@@ -180,6 +193,45 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
           this.toastService.error(
             'Erro ao carregar cidades. Por favor, tente novamente.'
           );
+        },
+      });
+  }
+
+  public onCepInput(event: Event): void {
+    this.onlyNumbers(event, 'cep', 8);
+    const cepVal = this.cadastroForm.get('cep')?.value;
+    if (cepVal && cepVal.length === 8) {
+      this.lookupCep(cepVal);
+    }
+  }
+
+  public lookupCep(cep: string): void {
+    this.loadingCep = true;
+    this.ibgeService
+      .getAddressByCep(cep)
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => (this.loadingCep = false))
+      )
+      .subscribe({
+        next: (res) => {
+          if (res && !res.erro) {
+            this.cadastroForm.patchValue(
+              {
+                endereco: res.logradouro || this.cadastroForm.value.endereco,
+                bairro: res.bairro || this.cadastroForm.value.bairro,
+                estado: res.uf || this.cadastroForm.value.estado,
+              },
+              { emitEvent: false }
+            );
+            this.cadastroForm.markAsDirty();
+            if (res.uf) {
+              this.loadCities(res.uf, res.localidade);
+            }
+          }
+        },
+        error: () => {
+          // Silent fallback if ViaCEP is unreachable
         },
       });
   }
@@ -208,6 +260,14 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
     }
   }
 
+  private resolveEntityValue(rawVal?: string | number): string | number {
+    if (!rawVal) return '';
+    const match = this.entitiesRegistryItems.find(
+      (e) => String(e.key) === String(rawVal) || e.value === rawVal
+    );
+    return match ? match.key : rawVal;
+  }
+
   getData(id: string): void {
     this.companyService
       .getCompanyById(id)
@@ -216,19 +276,28 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
         next: (data: Company) => {
           if (!data) return;
 
-          this.cadastroForm.patchValue({
-            responsavel: data.solicitante?.ds_responsavel || '',
-            cpf: data.solicitante?.nu_cpf || '',
-            dataNascimento: data.solicitante?.date_nascimento || '',
-            nomeFantasia: data.empresa?.ds_nome_fantasia || '',
-            entidadeRegistro: data.empresa?.co_entidade_registro || '',
-            cep: data.empresa?.endereco?.co_cep || '',
-            endereco: data.empresa?.endereco?.ds_logradouro || '',
-            numero: data.empresa?.endereco?.co_numero || '',
-            bairro: data.empresa?.endereco?.ds_bairro || '',
-            complemento: data.empresa?.endereco?.ds_complemento || '',
-            estado: data.empresa?.endereco?.ds_uf || '',
-          });
+          const cepStr = data.empresa?.endereco?.co_cep
+            ? String(data.empresa.endereco.co_cep).padStart(8, '0')
+            : '';
+
+          this.cadastroForm.patchValue(
+            {
+              responsavel: data.solicitante?.ds_responsavel || '',
+              cpf: data.solicitante?.nu_cpf || '',
+              dataNascimento: data.solicitante?.date_nascimento || '',
+              nomeFantasia: data.empresa?.ds_nome_fantasia || '',
+              entidadeRegistro: this.resolveEntityValue(
+                data.empresa?.co_entidade_registro
+              ),
+              cep: cepStr,
+              endereco: data.empresa?.endereco?.ds_logradouro || '',
+              numero: data.empresa?.endereco?.co_numero || '',
+              bairro: data.empresa?.endereco?.ds_bairro || '',
+              complemento: data.empresa?.endereco?.ds_complemento || '',
+              estado: data.empresa?.endereco?.ds_uf || '',
+            },
+            { emitEvent: false }
+          );
 
           if (data.empresa?.endereco?.ds_uf) {
             this.loadCities(
@@ -259,25 +328,28 @@ export class CompanyRegistrationComponent implements OnInit, OnDestroy {
   }
 
   private mapFormToPayload(): any {
+    const rawValues = this.cadastroForm.getRawValue();
     return {
       solicitante: {
-        ds_responsavel: this.cadastroForm.value.responsavel,
-        nu_cpf: this.cadastroForm.value.cpf,
-        date_nascimento: this.cadastroForm.value.dataNascimento,
+        ds_responsavel: rawValues.responsavel,
+        nu_cpf: rawValues.cpf,
+        date_nascimento: rawValues.dataNascimento,
       },
       empresa: {
-        ds_nome_fantasia: this.cadastroForm.value.nomeFantasia,
-        co_entidade_registro: this.cadastroForm.value.entidadeRegistro,
+        ds_nome_fantasia: rawValues.nomeFantasia,
+        co_entidade_registro: rawValues.entidadeRegistro,
         endereco: {
-          ds_logradouro: this.cadastroForm.value.endereco,
-          co_numero: String(this.cadastroForm.value.numero) || '',
-          ds_complemento: this.cadastroForm.value.complemento || '',
-          ds_bairro: this.cadastroForm.value.bairro,
-          ds_municipio: this.cadastroForm.value.cidade,
-          ds_uf: this.cadastroForm.value.estado,
-          co_cep: this.cadastroForm.value.cep,
+          ds_logradouro: rawValues.endereco,
+          co_numero: String(rawValues.numero) || '',
+          ds_complemento: rawValues.complemento || '',
+          ds_bairro: rawValues.bairro,
+          ds_municipio: rawValues.cidade,
+          ds_uf: rawValues.estado,
+          co_cep: rawValues.cep,
         },
       },
+      status: 'Aprovado',
+      created_at: this.today,
     };
   }
 

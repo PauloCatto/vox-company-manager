@@ -1,143 +1,49 @@
-📌 Case Vox — Frontend
+# 📊 Vox Company Manager — Gestão Societária & BI Analytics
 
-Aplicação para gestão e cadastro de empresas.
-Voltada para qualidade de código, experiência do usuário, formulários reativos, integrações externas e testes unitários.
+Aplicação corporativa desenvolvida em **Angular 17 (Standalone Components)** para gestão de solicitações de abertura de empresas e **Business Intelligence (BI)** em tempo real, integrada às APIs oficiais do **IBGE** e **ViaCEP**.
 
-🚀 Como rodar o projeto
+---
 
-📥 Clone o repositório:
+## 🚀 Como rodar o projeto
 
-git clone https://github.com/PauloCatto/case-vox-fe.git
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/PauloCatto/vox-company-manager.git
+   cd vox-company-manager
+   ```
 
+2. **Instale as dependências:**
+   ```bash
+   npm install --legacy-peer-deps
+   ```
 
-📂 Entre na pasta:
+3. **Inicie o Frontend + Mock API (JSON Server) simultaneamente:**
+   ```bash
+   npm run dev
+   ```
+   - **Aplicação Angular:** `http://localhost:4200`
+   - **Dashboard BI Executivo:** `http://localhost:4200/dashboard`
+   - **Mock API (JSON Server):** `http://localhost:3000`
 
-cd case-vox-frontend
+---
 
+## ✨ Destaques da Arquitetura & Funcionalidades
 
-📦 Instale as dependências:
+### 1. Módulo de Business Intelligence (BI & Analytics) 📈
+- **KPIs Executivos:** Total de empresas ativas, Taxa de Aprovação do funil societário, Cobertura Geográfica (UFs e Municípios) e Entidade Registradora líder.
+- **Visualizações Analíticas:**
+  - *Share por Entidade de Registro* (Junta Comercial, RFB, Cartório, OAB) com barra proporcional empilhada e detalhamento percentual.
+  - *Ranking Geográfico por UF (IBGE)* com distribuição de volume por estado.
+  - *Evolução Mensal de Solicitações* no semestre.
+  - *Pipeline Operacional & Demografia* por faixa etária dos sócios responsáveis.
+- **Filtros Multidimensionais & Exportação CSV:** Filtragem combinada por Entidade, Estado (UF) e Status com geração instantânea de relatório `.csv` compatível com Excel/Power BI.
 
-npm install --legacy-peer-deps
+### 2. Gestão de Pedidos Societários (`/home`) 🏢
+- Busca reativa em tempo real por Nome Fantasia, Responsável, CPF ou Município.
+- Filtros rápidos por Entidade de Registro e UF.
+- Painel lateral de inspeção detalhada (Master-Detail View) com formatação de CPF, CEP, datas timezone-safe e badges de status.
 
-⚡ App + Mock API juntos:
-
-npm run dev
-
-
-🧪 Rodar testes com coverage:
-
-npm test -- --code-coverage
-
-✅ Funcionalidades em Destaque
-<br>
-
-1️⃣ Formulário Reativo com Validações 🔍
-
-✔ Construído com FormBuilder + ReactiveFormsModule
-<br>
-✔ Mensagens de erro inteligentes e reativas
-<br>
-✔ Validações completas:
-
-CPF → 11 dígitos
-
-CEP → 8 dígitos
-
-Datas e campos obrigatórios com feedback visual
-<br>
-✔ Função onlyNumbers() → protege entrada e formato no input
-
-2️⃣ Modo de Edição e Criação em Uma Tela ✨
-<br>
-<br>
-✔ Detecta via parâmetro id da rota
-<br>
-✔ Em edição:
-
-Carrega dados via getCompanyById()
-
-Mantém pristine/untouched após popular o formulário
-<br>
-✔ Lógica centralizada para:
-
-createCompany()
-
-updateCompany()
-
-3️⃣ Integração com API do IBGE 🗺️
-
-✔ Carrega estados na inicialização
-<br>
-✔ Carrega cidades reativamente conforme o estado
-<br>
-✔ Campo cidade desabilitado até seleção do estado
-<br>
-✔ Loading dedicado (loadingCities)
-<br>
-<br>
-4️⃣ UX aprimorado com Loadings 🌀
-<br>
-<br>
-✅ Indicadores visuais durante requisições
-<br>
-✅ Spinner profissional e centralizado na tela:
-
-5️⃣ Criação e Atualização Organizadas 🧩
-<br>
-<br>
-✔ mapFormToPayload() → garante estrutura correta remota
-<br>
-✔ Feedback via ToastService
-<br>
-✔ Redirecionamento claro e fluido após envio
-<br>
-
-6️⃣ Deletar Empresas 🗑️
-<br>
-✔ Funcionalidade de exclusão de empresas diretamente da lista
-<br>
-✔ Confirmação antes de deletar para evitar remoções acidentais
-<br>
-✔ Atualiza a UI em tempo real após exclusão
-<br>
-✔ Feedback visual via ToastService após sucesso ou falha
-<br>
-
-7️⃣ Navegação Segura 🛡
-<br>
-<br>
-✔ goBack() com confirmação → previne perda acidental
-<br>
-✔ SPA real usando Router
-<br>
-<br>
-8️⃣ Boas Práticas Angular ✅
-
-Standalone Components
-
-inject() no lugar de constructor
-
-Limpeza de observables com takeUntil + ngOnDestroy
-
-finalize() garantindo estado seguro mesmo em erro
-
-🧪 Testes Unitários (Jasmine + Karma)
-
-Cobertura:
-
-Cenário	Coberto ✅
-<br>
-Criação de empresa	✅
-<br>
-Validação de formulários	✅
-<br>
-Integração IBGE (estados/cidades)	✅
-<br>
-Serviços (mock via spyOn)	✅
-<br>
-Feedback visual com Toasts	✅
-<br>
-
-<br>
-<img width="1021" height="682" alt="Captura de tela 2025-10-27 015943" src="https://github.com/user-attachments/assets/89f8fe19-e08b-4247-ae6c-4a165dc1600a" />
-<br>
+### 3. Formulário Reativo Inteligente (`/company-registration`) 🧩
+- **Integração ViaCEP:** Preenchimento automático de Logradouro, Bairro, UF e Município ao digitar os 8 dígitos do CEP.
+- **Integração IBGE:** Carregamento dinâmico de Estados e Municípios em cascata.
+- **Modo Criação e Edição Unificados:** Preservação de estado `pristine`/`untouched` e resolução consistente do código da Entidade de Registro (`co_entidade_registro`).

@@ -10,7 +10,7 @@
         "ds_nome_fantasia": "Diogo e Marcelo Filmagens Ltda",
         "co_entidade_registro": 107309,
         "endereco": {
-          "co_cep": 14022094,
+          "co_cep": "14022094",
           "ds_logradouro": "Rua Alcino Jacinto Ramos",
           "co_numero": "233",
           "ds_complemento": null,
@@ -19,6 +19,8 @@
           "ds_uf": "SP"
         }
       },
+      "status": "Aprovado",
+      "created_at": "2026-06-15",
       "id": "1"
     },
     {
@@ -31,7 +33,7 @@
         "ds_nome_fantasia": "Isabela e Benício Transportes Ltda",
         "co_entidade_registro": 107306,
         "endereco": {
-          "co_cep": 14022094,
+          "co_cep": "14022094",
           "ds_logradouro": "Rua Francisco Nunes Villela",
           "co_numero": "233",
           "ds_complemento": "Apt 304",
@@ -40,7 +42,147 @@
           "ds_uf": "SP"
         }
       },
+      "status": "Aprovado",
+      "created_at": "2026-07-04",
       "id": "2"
+    },
+    {
+      "solicitante": {
+        "ds_responsavel": "Mariana Costa Vasconcelos",
+        "nu_cpf": "38165492014",
+        "date_nascimento": "1988-11-12"
+      },
+      "empresa": {
+        "ds_nome_fantasia": "Vasconcelos & Associados Advocacia",
+        "co_entidade_registro": 107308,
+        "endereco": {
+          "co_cep": "30140071",
+          "ds_logradouro": "Avenida Brasil",
+          "co_numero": "1450",
+          "ds_complemento": "Sala 902",
+          "ds_bairro": "Funcionários",
+          "ds_municipio": "Belo Horizonte",
+          "ds_uf": "MG"
+        }
+      },
+      "status": "Aprovado",
+      "created_at": "2026-08-10",
+      "id": "3"
+    },
+    {
+      "solicitante": {
+        "ds_responsavel": "Henrique Duarte Moreira",
+        "nu_cpf": "51928374605",
+        "date_nascimento": "1995-02-18"
+      },
+      "empresa": {
+        "ds_nome_fantasia": "Moreira Cloud & Data Solutions",
+        "co_entidade_registro": 107306,
+        "endereco": {
+          "co_cep": "80420090",
+          "ds_logradouro": "Rua Visconde do Rio Branco",
+          "co_numero": "1630",
+          "ds_complemento": "Andar 12",
+          "ds_bairro": "Centro",
+          "ds_municipio": "Curitiba",
+          "ds_uf": "PR"
+        }
+      },
+      "status": "Em Análise",
+      "created_at": "2026-09-02",
+      "id": "4"
+    },
+    {
+      "solicitante": {
+        "ds_responsavel": "Fernanda Peixoto Ribeiro",
+        "nu_cpf": "64839201788",
+        "date_nascimento": "1981-07-25"
+      },
+      "empresa": {
+        "ds_nome_fantasia": "Cartório & Registros Sul",
+        "co_entidade_registro": 107305,
+        "endereco": {
+          "co_cep": "88015200",
+          "ds_logradouro": "Avenida Rio Branco",
+          "co_numero": "404",
+          "ds_complemento": "Bloco B",
+          "ds_bairro": "Centro",
+          "ds_municipio": "Florianópolis",
+          "ds_uf": "SC"
+        }
+      },
+      "status": "Aprovado",
+      "created_at": "2026-09-19",
+      "id": "5"
+    },
+    {
+      "solicitante": {
+        "ds_responsavel": "Gabriel Nogueira Cavalcanti",
+        "nu_cpf": "19283746509",
+        "date_nascimento": "1998-05-09"
+      },
+      "empresa": {
+        "ds_nome_fantasia": "Atlântico Logística Integrada S.A.",
+        "co_entidade_registro": 107309,
+        "endereco": {
+          "co_cep": "20040002",
+          "ds_logradouro": "Avenida Rio Branco",
+          "co_numero": "115",
+          "ds_complemento": "18º Andar",
+          "ds_bairro": "Centro",
+          "ds_municipio": "Rio de Janeiro",
+          "ds_uf": "RJ"
+        }
+      },
+      "status": "Em Análise",
+      "created_at": "2026-10-05",
+      "id": "6"
+    },
+    {
+      "solicitante": {
+        "ds_responsavel": "Patrícia Lemos Albuquerque",
+        "nu_cpf": "82736451920",
+        "date_nascimento": "1976-12-03"
+      },
+      "empresa": {
+        "ds_nome_fantasia": "Albuquerque Consultoria Tributária",
+        "co_entidade_registro": 107305,
+        "endereco": {
+          "co_cep": "70070120",
+          "ds_logradouro": "SBS Quadra 2 Bloco E",
+          "co_numero": "12",
+          "ds_complemento": "Edifício Prime",
+          "ds_bairro": "Asa Sul",
+          "ds_municipio": "Brasília",
+          "ds_uf": "DF"
+        }
+      },
+      "status": "Aprovado",
+      "created_at": "2026-10-21",
+      "id": "7"
+    },
+    {
+      "solicitante": {
+        "ds_responsavel": "Lucas Mendonça Azevedo",
+        "nu_cpf": "45678912334",
+        "date_nascimento": "1993-08-14"
+      },
+      "empresa": {
+        "ds_nome_fantasia": "Nordeste Tech Hub & Inovação",
+        "co_entidade_registro": 107306,
+        "endereco": {
+          "co_cep": "41820021",
+          "ds_logradouro": "Avenida Tancredo Neves",
+          "co_numero": "2539",
+          "ds_complemento": "Torre Londres, Sala 1104",
+          "ds_bairro": "Caminho das Árvores",
+          "ds_municipio": "Salvador",
+          "ds_uf": "BA"
+        }
+      },
+      "status": "Pendente",
+      "created_at": "2026-11-03",
+      "id": "8"
     }
   ],
   "entidade-registro": [
@@ -61,5 +203,4 @@
       "value": "RFB"
     }
   ]
-
 }

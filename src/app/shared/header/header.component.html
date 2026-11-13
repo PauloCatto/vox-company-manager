@@ -1,22 +1,41 @@
 <nav class="custom-nav">
-  <div class="header-container">
+  <div class="header-container container-xxl">
     <div class="header-content d-flex align-items-center w-100">
-      <div class="logo-container">
-        <img
-          class="logo"
-          src="assets/images/vox-img.png"
-          alt="logo-vox"
-        />
+      <div
+        class="logo-container d-flex align-items-center gap-3"
+        style="cursor: pointer"
+        (click)="router.navigate(['/home'])"
+      >
+        <img class="logo" src="assets/images/vox-img.png" alt="logo-vox" />
       </div>
 
       <div
         class="content-between ms-4 d-flex align-items-center justify-content-between w-100"
       >
-        <h2 class="title">Solicitar Abertura de empresa</h2>
+        <div>
+          <h2 class="title fw-bold mb-1">Vox Company Manager</h2>
+          <div class="nav-pills-group d-flex gap-2 mt-1">
+            <a
+              routerLink="/home"
+              routerLinkActive="active-nav-pill"
+              class="nav-pill-link text-decoration-none px-3 py-1 rounded-pill small fw-medium"
+            >
+              <i class="bi bi-card-list me-1"></i> Pedidos Societários
+            </a>
+            <a
+              routerLink="/dashboard"
+              routerLinkActive="active-nav-pill"
+              class="nav-pill-link text-decoration-none px-3 py-1 rounded-pill small fw-medium"
+            >
+              <i class="bi bi-bar-chart-line-fill me-1"></i> Dashboard BI
+            </a>
+          </div>
+        </div>
+
         <div class="btn-container" *ngIf="showOpenButton && !disableButton">
           <button
             type="button"
-            class="btn btn-primary d-flex align-items-center px-3 py-2"
+            class="btn btn-primary d-flex align-items-center px-3 py-2 shadow-sm rounded-3"
             (click)="openForm()"
           >
             <span class="icon-circle me-2">
