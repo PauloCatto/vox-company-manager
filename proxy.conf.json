@@ -1,0 +1,10 @@
+{
+  "/api-ibge": {
+    "target": "https://servicodados.ibge.gov.br",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api-ibge": ""
+    }
+  }
+}

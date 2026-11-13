@@ -1,0 +1,40 @@
+.company-text {
+ min-width: 0; 
+  display: flex;
+  flex-direction: column;
+
+  strong,
+  small {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.btn {
+    margin-left: 5px;
+}
+
+button {
+  min-width: fit-content;
+}
+
+.empty-state {
+  min-height: 50vh;
+  text-align: center;
+  animation: fadeIn 0.8s ease-out;
+
+  .icon {
+    animation: bounce 1s infinite;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}

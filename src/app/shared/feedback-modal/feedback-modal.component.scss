@@ -1,0 +1,31 @@
+.modal-dialog {
+  margin-top: 1rem;
+  margin-bottom: auto;
+}
+
+.modal-body {
+  position: relative;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px #0000004d;
+  background-color: #fff;
+
+  .btn-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 1.2rem;
+    z-index: 10;
+  }
+
+  .icon-feedback {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+

@@ -1,0 +1,38 @@
+<section
+  class="modal-body text-center p-4"
+  style="margin: auto; position: relative"
+  [ngClass]="{ 'error-style': type === 'error' }"
+>
+  <button
+    type="button"
+    class="btn-close position-absolute top-0 end-0 m-2"
+    aria-label="Close"
+    (click)="close()"
+  ></button>
+
+  <header *ngIf="type !== 'error'" class="mb-3">
+    <div class="icon-feedback mb-2">
+      <i
+        class="bi"
+        [ngClass]="{
+          'bi-check-circle text-success': type === 'success',
+          'bi-info-circle text-info': type === 'info'
+        }"
+        style="font-size: 50px"
+        aria-hidden="true"
+      ></i>
+    </div>
+    <h2 class="visually-hidden">Feedback</h2>
+  </header>
+
+  <p class="m-0">{{ message }}</p>
+
+  <div *ngIf="confirmButtons" class="d-flex justify-content-center gap-2 mt-3">
+    <button type="button" class="btn btn-secondary" (click)="close()">
+      Não
+    </button>
+    <button type="button" class="btn btn-primary" (click)="confirm()">
+      Sim
+    </button>
+  </div>
+</section>
